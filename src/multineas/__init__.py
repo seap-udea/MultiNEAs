@@ -34,7 +34,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # Package metadata
-__version__ = '0.2.0'
+__version__ = '0.2.1'
 __author__ = 'Jorge I. Zuluaga, Juanita A. Agudelo'
 __email__ = 'jorge.zuluaga@udea.edu.co, juanita.agudelo@udea.edu.co'
 __license__ = 'AGPL-3.0-only'
@@ -44,6 +44,9 @@ __url__ = 'https://github.com/seap-udea/MultiNEAs'
 VERSION = __version__
 AUTHOR = __author__
 EMAIL = __email__
+
+import os
+ROOTDIR = os.path.dirname(os.path.abspath(__file__))
 
 class MultiNEAsBase:
     """

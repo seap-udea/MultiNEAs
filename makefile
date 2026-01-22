@@ -20,6 +20,7 @@ help:
 	@echo "  docs         - Build documentation (installs docs requirements)"
 	@echo "  push         - Commit (all files) and push current branch"
 	@echo "  release      - Release a new version (usage: make release RELMODE=release VERSION=x.y.z)"
+	@echo "  data-update  - Update data files from MPC"
 
 install:
 	pip install .
@@ -61,8 +62,12 @@ push:
 	@echo "Pushing current branch..."
 	@git push -u origin HEAD
 
+data-update:
+	@chmod +x bin/data_update.sh
+	@bash bin/data_update.sh
+
 # Example: make release RELMODE=release VERSION=0.2.0.2
-release: push
+release: clean push data-update
 	@test -n "$(VERSION)" || (echo "ERROR: VERSION is required. Example: make release RELMODE=release VERSION=0.2.0" && exit 1)
 	@echo "Releasing a new version..."
 	@bash bin/release.sh $(RELMODE) $(VERSION)

@@ -2,6 +2,8 @@ import numpy as np
 import math
 from time import time
 import spiceypy as spy
+import os
+from multineas import ROOTDIR
 
 class Util(object):
     """
@@ -27,8 +29,31 @@ class Util(object):
     TIME=time()
     #Stores the duration between elTime consecutive calls 
     DTIME=-1
+    DTIME=-1
     DUTIME=[]
     
+    @staticmethod
+    def get_data(filename):
+        """
+        Get the full path of the `filename` which is one of the datafiles provided with the package.
+        
+        Parameters
+        ----------
+        filename : str
+            Name of the data file.
+            
+        Returns
+        -------
+        path : str
+            Full path to package datafile.
+            
+        Examples
+        --------
+        >>> from multineas.util import Util
+        >>> path=Util.get_data("nea_extended.json.gz")
+        """
+        return os.path.join(ROOTDIR, 'data', filename)
+
     @staticmethod
     def f2u(x,s):
         """
