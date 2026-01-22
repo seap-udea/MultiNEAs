@@ -7,6 +7,7 @@
    multimin
    plot
    util
+   examples
 
 ------------
 

@@ -29,7 +29,7 @@ setuptools.setup(
     # CLASSIFIER
     # ######################################################################
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Science/Research",
         "Topic :: Scientific/Engineering :: Astronomy",
         "Programming Language :: Python :: 3",
@@ -40,7 +40,7 @@ setuptools.setup(
         "License :: OSI Approved :: GNU Affero General Public License v3",
         "Operating System :: OS Independent",
     ],
-    version='0.1.3',
+    version='0.2.0',
 
     # ######################################################################
     # FILES

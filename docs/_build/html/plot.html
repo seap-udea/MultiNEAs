@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Plotting Utilities &#8212; MultiNEAs 0.1.3 documentation</title>
+    <title>Plotting Utilities &#8212; MultiNEAs 0.2.0 documentation</title>
   
   
   
@@ -30,7 +30,7 @@
   <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
   
   <!-- So that users can add custom icons -->
   <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -38,9 +38,10 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=360bc84d"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/documentation_options.js?v=938c9ccc"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'plot';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -110,7 +111,7 @@
   
   
   
-    <p class="title logo__title">MultiNEAs 0.1.3 documentation</p>
+    <p class="title logo__title">MultiNEAs 0.2.0 documentation</p>
   
 </a></div>
     
@@ -141,6 +142,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="util.html">
     Utilities
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="examples.html">
+    Tutorials and Examples
   </a>
 </li>
 
@@ -246,6 +254,13 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="examples.html">
+    Tutorials and Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-external" href="https://github.com/seap-udea/MultiNEAs">
     Source
   </a>
@@ -338,7 +353,7 @@
 <span id="plotting-utilities"></span><h1>Plotting Utilities<a class="headerlink" href="#module-multineas.plot" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="multineas.plot.CornerPlot">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">multineas.plot.</span></span><span class="sig-name descname"><span class="pre">CornerPlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">properties</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'out'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multineas/plot.html#CornerPlot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multineas.plot.CornerPlot" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">multineas.plot.</span></span><span class="sig-name descname"><span class="pre">CornerPlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">properties</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'out'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multineas/plot.html#CornerPlot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multineas.plot.CornerPlot" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Create a grid of plots showing the projection of a N-dimensional data.</p>
 <dl class="field-list simple">
@@ -472,7 +487,7 @@ Dictionary values:</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="multineas.plot.CornerPlot.plotHist">
-<span class="sig-name descname"><span class="pre">plotHist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorbar=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">\*\*args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multineas/plot.html#CornerPlot.plotHist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multineas.plot.CornerPlot.plotHist" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">plotHist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">\*\*args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multineas/plot.html#CornerPlot.plotHist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multineas.plot.CornerPlot.plotHist" title="Link to this definition">#</a></dt>
 <dd><p>Create a 2d-histograms of data on all panels of the CornerPlot.</p>
 </dd></dl>
 
@@ -693,7 +708,7 @@ Dictionary values:</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
     <br/>
   </p>
 </div>
