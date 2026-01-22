@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>multineas.plot &mdash; MultiNEAs 0.2.18 documentation</title>
+  <title>multineas.plot &mdash; MultiNEAs 0.3.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=ae23a911"></script>
+      <script src="../../_static/documentation_options.js?v=4621528c"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -48,6 +48,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../multimin.html">Multi-dimensional Minimization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../plot.html">Plotting Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../population.html">Population Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../orbit.html">Orbital Mechanics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../util.html">Utilities</a></li>
 </ul>
 
@@ -81,6 +83,42 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mpl_toolkits.axes_grid1</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_axes_locatable</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">Util</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.version</span><span class="w"> </span><span class="kn">import</span> <span class="n">__version__</span>
+
+<div class="viewcode-block" id="multineas_watermark">
+<a class="viewcode-back" href="../../plot.html#multineas.plot.multineas_watermark">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">multineas_watermark</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span><span class="n">enlarge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a water mark to a 2d or 3d plot.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    </span>
+<span class="sd">        ax: Class axes: </span>
+<span class="sd">            Axe where the pryngles mark will be placed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#Get the height of axe</span>
+    <span class="n">axh</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">get_window_extent</span><span class="p">()</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span><span class="o">.</span><span class="n">dpi_scale_trans</span><span class="o">.</span><span class="n">inverted</span><span class="p">())</span><span class="o">.</span><span class="n">height</span>
+    <span class="n">fig_factor</span><span class="o">=</span><span class="n">axh</span><span class="o">/</span><span class="mi">4</span>
+    
+    <span class="c1">#Options of the water mark</span>
+    <span class="n">args</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">rotation</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span><span class="n">ha</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span><span class="n">va</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;pink&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="o">*</span><span class="n">fig_factor</span><span class="o">*</span><span class="n">enlarge</span><span class="p">,</span><span class="n">zorder</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span>
+    <span class="p">)</span>
+    
+    <span class="c1">#Text of the water mark</span>
+    <span class="n">mark</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;MultiNEAs </span><span class="si">{</span><span class="n">__version__</span><span class="si">}</span><span class="s2">&quot;</span>
+    
+    <span class="c1">#Choose the according to the fact it is a 2d or 3d plot</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">add_collection3d</span>
+        <span class="n">plt_text</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">text2D</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">plt_text</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">text</span>
+        
+    <span class="n">text</span><span class="o">=</span><span class="n">plt_text</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">mark</span><span class="p">,</span><span class="o">**</span><span class="n">args</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">text</span></div>
+
+
 
 <div class="viewcode-block" id="CornerPlot">
 <a class="viewcode-back" href="../../plot.html#multineas.plot.CornerPlot">[docs]</a>
@@ -391,6 +429,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">set_ranges</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_tick_params</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="n">multineas_watermark</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">hist</span></div>
 
                     
@@ -429,6 +468,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">set_ranges</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_tick_params</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="n">multineas_watermark</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">scatter</span></div>
 </div>
 

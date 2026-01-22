@@ -1,4 +1,4 @@
-Multi-dimensional Minimization
+Multi-dimensional gaussian fit
 ========================================
 
 .. automodule:: multineas.multimin

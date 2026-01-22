@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>multineas.util &mdash; MultiNEAs 0.2.18 documentation</title>
+  <title>multineas.util &mdash; MultiNEAs 0.3.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=ae23a911"></script>
+      <script src="../../_static/documentation_options.js?v=4621528c"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -48,6 +48,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../multimin.html">Multi-dimensional Minimization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../plot.html">Plotting Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../population.html">Population Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../orbit.html">Orbital Mechanics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../util.html">Utilities</a></li>
 </ul>
 
@@ -475,9 +477,8 @@
 <span class="sd">        Sources</span>
 <span class="sd">        -------</span>
 <span class="sd">        Based on: https://www.visiondummy.com/2014/04/geometric-interpretation-covariance-matrix/</span>
-<span class="sd">            Attribution</span>
-<span class="sd">            -----------</span>
-<span class="sd">            [HC] This class was mostly developed by human intelligences.</span>
+<span class="sd">        </span>
+<span class="sd">        Attr. [HC]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">Nvars</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">sigmas</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>        
@@ -529,9 +530,8 @@
 <span class="sd">        [1. 2. 3.]</span>
 <span class="sd">        &gt;&gt;&gt; print(rhos)</span>
 <span class="sd">        [[0.1 0.2 0.3]]</span>
-<span class="sd">            Attribution</span>
-<span class="sd">            -----------</span>
-<span class="sd">            [HC] This class was mostly developed by human intelligences.</span>
+
+<span class="sd">        Attr. [HC]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Sigmas</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">!=</span><span class="mi">3</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Array of Sigmas (shape </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Sigmas</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">) must be an array of matrices&quot;</span><span class="p">)</span>

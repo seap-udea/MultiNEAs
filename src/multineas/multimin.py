@@ -12,7 +12,7 @@ from hashlib import md5
 import os
 
 from .util import Util, Stats
-from .plot import CornerPlot
+from .plot import CornerPlot, multineas_watermark
 
 class ComposedMultiVariateNormal(object):
     """
@@ -562,6 +562,7 @@ class ComposedMultiVariateNormal(object):
             ax.scatter(self.data[:,0],self.data[:,1],**sargs)
             ax.set_xlabel(properties[keys[0]]["label"])
             ax.set_ylabel(properties[keys[1]]["label"])
+            multineas_watermark(ax)
             fig.tight_layout()
             return fig
     
@@ -963,6 +964,7 @@ class FitCMND():
             ax.grid()
             ax.set_xlabel(properties[keys[0]]["label"])
             ax.set_ylabel(properties[keys[1]]["label"])
+            multineas_watermark(ax)
             fig.tight_layout()
             self.fig=fig
             return fig

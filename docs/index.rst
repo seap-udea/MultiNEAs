@@ -15,4 +15,6 @@
 
    multimin
    plot
+   population
+   orbit
    util

@@ -363,9 +363,8 @@ class Stats(object):
         Sources
         -------
         Based on: https://www.visiondummy.com/2014/04/geometric-interpretation-covariance-matrix/
-            Attribution
-            -----------
-            [HC] This class was mostly developed by human intelligences.
+        
+        Attr. [HC]
         """
         try:
             Nvars=len(sigmas[0])        
@@ -414,9 +413,8 @@ class Stats(object):
         [1. 2. 3.]
         >>> print(rhos)
         [[0.1 0.2 0.3]]
-            Attribution
-            -----------
-            [HC] This class was mostly developed by human intelligences.
+
+        Attr. [HC]
         """
         if len(np.array(Sigmas).shape)!=3:
             raise AssertionError(f"Array of Sigmas (shape {np.array(Sigmas).shape}) must be an array of matrices")

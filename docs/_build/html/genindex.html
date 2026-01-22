@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; MultiNEAs 0.3.0 documentation</title>
+  <title>Index &mdash; MultiNEAs 0.3.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=e259d695"></script>
+      <script src="_static/documentation_options.js?v=4621528c"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -46,8 +46,10 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multi-dimensional Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multimin.html">Multi-dimensional gaussian fit</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plot.html">Plotting Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population.html">Population Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="orbit.html">Orbital Mechanics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="util.html">Utilities</a></li>
 </ul>
 
@@ -84,6 +86,7 @@
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
@@ -98,10 +101,14 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="plot.html#multineas.plot.CornerPlot.axp">axp (multineas.plot.CornerPlot attribute)</a>
+      <li><a href="population.html#multineas.population.Asteroid.a_std">a_std (multineas.population.Asteroid attribute)</a>
+</li>
+      <li><a href="population.html#multineas.population.Asteroid">Asteroid (class in multineas.population)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="plot.html#multineas.plot.CornerPlot.axp">axp (multineas.plot.CornerPlot attribute)</a>
+</li>
       <li><a href="plot.html#multineas.plot.CornerPlot.axs">axs (multineas.plot.CornerPlot attribute)</a>
 </li>
   </ul></td>
@@ -110,6 +117,8 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="population.html#multineas.population.Asteroid.C_std">C_std (multineas.population.Asteroid attribute)</a>
+</li>
       <li><a href="util.html#multineas.util.Stats.calc_correlations_from_covariances">calc_correlations_from_covariances() (multineas.util.Stats method)</a>
 </li>
       <li><a href="util.html#multineas.util.Stats.calc_covariance_from_correlations">calc_covariance_from_correlations() (multineas.util.Stats method)</a>
@@ -132,10 +141,12 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="util.html#multineas.util.Util.DTIME">DTIME (multineas.util.Util attribute)</a>
+      <li><a href="population.html#multineas.population.Asteroid.diameter_to_hmag">diameter_to_hmag() (multineas.population.Asteroid static method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="util.html#multineas.util.Util.DTIME">DTIME (multineas.util.Util attribute)</a>
+</li>
       <li><a href="util.html#multineas.util.Util.DUTIME">DUTIME (multineas.util.Util attribute)</a>
 </li>
   </ul></td>
@@ -189,6 +200,14 @@
   </ul></td>
 </tr></table>
 
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="population.html#multineas.population.Asteroid.hmag_to_diameter">hmag_to_diameter() (multineas.population.Asteroid static method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -216,18 +235,29 @@
       <ul>
         <li><a href="multimin.html#module-multineas.multimin">multineas.multimin</a>
 </li>
+        <li><a href="orbit.html#module-multineas.orbit">multineas.orbit</a>
+</li>
         <li><a href="plot.html#module-multineas.plot">multineas.plot</a>
+</li>
+        <li><a href="population.html#module-multineas.population">multineas.population</a>
 </li>
         <li><a href="util.html#module-multineas.util">multineas.util</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     multineas.multimin
 
       <ul>
         <li><a href="multimin.html#module-multineas.multimin">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    multineas.orbit
+
+      <ul>
+        <li><a href="orbit.html#module-multineas.orbit">module</a>
 </li>
       </ul></li>
       <li>
@@ -238,12 +268,21 @@
 </li>
       </ul></li>
       <li>
+    multineas.population
+
+      <ul>
+        <li><a href="population.html#module-multineas.population">module</a>
+</li>
+      </ul></li>
+      <li>
     multineas.util
 
       <ul>
         <li><a href="util.html#module-multineas.util">module</a>
 </li>
       </ul></li>
+      <li><a href="plot.html#multineas.plot.multineas_watermark">multineas_watermark() (in module multineas.plot)</a>
+</li>
       <li><a href="multimin.html#multineas.multimin.ComposedMultiVariateNormal.mus">mus (multineas.multimin.ComposedMultiVariateNormal attribute)</a>
 </li>
   </ul></td>

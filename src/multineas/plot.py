@@ -3,6 +3,39 @@ import numpy as np
 from matplotlib import pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from .util import Util
+from .version import __version__
+
+def multineas_watermark(ax,enlarge=1,alpha=0.5):
+    """Add a water mark to a 2d or 3d plot.
+    
+    Parameters:
+    
+        ax: Class axes: 
+            Axe where the pryngles mark will be placed.
+    """
+    #Get the height of axe
+    axh=ax.get_window_extent().transformed(ax.get_figure().dpi_scale_trans.inverted()).height
+    fig_factor=axh/4
+    
+    #Options of the water mark
+    args=dict(
+        rotation=270,ha='left',va='top',
+        transform=ax.transAxes,color='pink',fontsize=8*fig_factor*enlarge,zorder=100,alpha=alpha,
+    )
+    
+    #Text of the water mark
+    mark=f"MultiNEAs {__version__}"
+    
+    #Choose the according to the fact it is a 2d or 3d plot
+    try:
+        ax.add_collection3d
+        plt_text=ax.text2D
+    except:
+        plt_text=ax.text
+        
+    text=plt_text(1,1,mark,**args);
+    return text
+
 
 class CornerPlot(object):
     """
@@ -297,6 +330,7 @@ class CornerPlot(object):
         self.set_ranges()
         self.set_tick_params()
         self.tight_layout()
+        multineas_watermark(self.axs[0][0])
         return hist
                     
     def scatter_plot(self,data,**args):
@@ -332,4 +366,5 @@ class CornerPlot(object):
         self.set_ranges()
         self.set_tick_params()
         self.tight_layout()
+        multineas_watermark(self.axs[0][0])
         return scatter
