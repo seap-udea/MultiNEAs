@@ -4,7 +4,7 @@
 #            and population                                      #
 #                                                                #
 ##################################################################
-# License: MIT                                                   #
+# License: GNU Affero General Public License v3 (AGPL-3.0)        #
 ##################################################################
 import setuptools
 
@@ -23,7 +23,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/seap-udea/MultiNEAs",
     keywords='astronomy asteroids near-earth-asteroids dynamics celestial-mechanics',
-    license='MIT',
+    license='AGPL-3.0-only',
 
     # ######################################################################
     # CLASSIFIER
@@ -37,10 +37,10 @@ setuptools.setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
-        "License :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: GNU Affero General Public License v3",
         "Operating System :: OS Independent",
     ],
-    version='0.1.0',
+    version='0.1.1',
 
     # ######################################################################
     # FILES

@@ -4,7 +4,7 @@
 #            and population                                      #
 #                                                                #
 ##################################################################
-# License: MIT                                                   #
+# License: GNU Affero General Public License v3 (AGPL-3.0)        #
 # Authors: Jorge I. Zuluaga, Juanita A. Agudelo                 #
 # Contact: jorge.zuluaga@udea.edu.co                            #
 ##################################################################
@@ -34,10 +34,10 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # Package metadata
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 __author__ = 'Jorge I. Zuluaga, Juanita A. Agudelo'
 __email__ = 'jorge.zuluaga@udea.edu.co, juanita.agudelo@udea.edu.co'
-__license__ = 'MIT'
+__license__ = 'AGPL-3.0-only'
 __url__ = 'https://github.com/seap-udea/MultiNEAs'
 
 # Version information

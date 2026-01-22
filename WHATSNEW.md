@@ -19,7 +19,7 @@ This is the first release of MultiNEAs, establishing the basic package structure
 
 - **Documentation**:
   - Initial `README.md` with project overview and installation instructions
-  - `LICENSE` file with MIT license
+  - `LICENSE` file with GNU Affero General Public License v3 (AGPL-3.0)
   - This `WHATSNEW.md` changelog
 
 - **Testing Framework**:
