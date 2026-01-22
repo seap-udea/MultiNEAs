@@ -6,16 +6,16 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Utilities &mdash; MultiNEAs 0.2.19 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+  <title>Utilities &mdash; MultiNEAs 0.3.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=0a5b2d08"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/documentation_options.js?v=e259d695"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -81,7 +81,7 @@
 <span id="utilities"></span><h1>Utilities<a class="headerlink" href="#module-multineas.util" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="multineas.util.Stats">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">multineas.util.</span></span><span class="sig-name descname"><span class="pre">Stats</span></span><a class="reference internal" href="_modules/multineas/util.html#Stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multineas.util.Stats" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">multineas.util.</span></span><span class="sig-name descname"><span class="pre">Stats</span></span><a class="reference internal" href="_modules/multineas/util.html#Stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multineas.util.Stats" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Abstract class with useful routines</p>
 <p>Attr. [HC]</p>
@@ -139,7 +139,7 @@ covariance matrices.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sigmas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># rho_12, rho_13, rho_23</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rhos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]])</span>
@@ -254,7 +254,7 @@ NOTE: It should be normalized, ie. sum(probs)=1</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="multineas.util.Stats.phi">
-<span class="sig-name descname"><span class="pre">phi</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.618033988749895</span></em><a class="headerlink" href="#multineas.util.Stats.phi" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">phi</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.618033988749895</span></span><a class="headerlink" href="#multineas.util.Stats.phi" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -326,33 +326,33 @@ NOTE: It should be normalized, ie. sum(probs)=1</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="multineas.util.Util">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">multineas.util.</span></span><span class="sig-name descname"><span class="pre">Util</span></span><a class="reference internal" href="_modules/multineas/util.html#Util"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multineas.util.Util" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">multineas.util.</span></span><span class="sig-name descname"><span class="pre">Util</span></span><a class="reference internal" href="_modules/multineas/util.html#Util"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multineas.util.Util" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This abstract class contains useful methods for the package.</p>
 <p>Attr. [HC]</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="multineas.util.Util.DTIME">
-<span class="sig-name descname"><span class="pre">DTIME</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">-1</span></em><a class="headerlink" href="#multineas.util.Util.DTIME" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">DTIME</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">-1</span></span><a class="headerlink" href="#multineas.util.Util.DTIME" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="multineas.util.Util.DUTIME">
-<span class="sig-name descname"><span class="pre">DUTIME</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#multineas.util.Util.DUTIME" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">DUTIME</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></span><a class="headerlink" href="#multineas.util.Util.DUTIME" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="multineas.util.Util.TIME">
-<span class="sig-name descname"><span class="pre">TIME</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1769096678.0303428</span></em><a class="headerlink" href="#multineas.util.Util.TIME" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">TIME</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1769097852.029881</span></span><a class="headerlink" href="#multineas.util.Util.TIME" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="multineas.util.Util.TIMESTART">
-<span class="sig-name descname"><span class="pre">TIMESTART</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1769096678.0303428</span></em><a class="headerlink" href="#multineas.util.Util.TIMESTART" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">TIMESTART</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1769097852.029881</span></span><a class="headerlink" href="#multineas.util.Util.TIMESTART" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="multineas.util.Util.cos">
-<span class="sig-name descname"><span class="pre">cos</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ufunc</span> <span class="pre">'cos'&gt;</span></em><a class="headerlink" href="#multineas.util.Util.cos" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">cos</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ufunc</span> <span class="pre">'cos'&gt;</span></span><a class="headerlink" href="#multineas.util.Util.cos" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -407,12 +407,12 @@ Attribution
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="multineas.util.Util.exp">
-<span class="sig-name descname"><span class="pre">exp</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ufunc</span> <span class="pre">'exp'&gt;</span></em><a class="headerlink" href="#multineas.util.Util.exp" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">exp</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ufunc</span> <span class="pre">'exp'&gt;</span></span><a class="headerlink" href="#multineas.util.Util.exp" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="multineas.util.Util.f2u">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">f2u</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multineas/util.html#Util.f2u"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multineas.util.Util.f2u" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">f2u</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multineas/util.html#Util.f2u"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multineas.util.Util.f2u" title="Link to this definition"></a></dt>
 <dd><p>Convert from a finite interval [0,s] to an unbound one [-inf,inf].</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -435,7 +435,7 @@ Attribution
 
 <dl class="py method">
 <dt class="sig sig-object py" id="multineas.util.Util.get_data">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multineas/util.html#Util.get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multineas.util.Util.get_data" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multineas/util.html#Util.get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multineas.util.Util.get_data" title="Link to this definition"></a></dt>
 <dd><p>Get the full path of the <cite>filename</cite> which is one of the datafiles provided with the package.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -449,7 +449,7 @@ Attribution
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">multineas.util</span> <span class="kn">import</span> <span class="n">Util</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">multineas.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">Util</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">path</span><span class="o">=</span><span class="n">Util</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s2">&quot;nea_extended.json.gz&quot;</span><span class="p">)</span>
 <span class="go">Attribution</span>
 <span class="go">-----------</span>
@@ -460,7 +460,7 @@ Attribution
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="multineas.util.Util.log">
-<span class="sig-name descname"><span class="pre">log</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ufunc</span> <span class="pre">'log'&gt;</span></em><a class="headerlink" href="#multineas.util.Util.log" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">log</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ufunc</span> <span class="pre">'log'&gt;</span></span><a class="headerlink" href="#multineas.util.Util.log" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -493,12 +493,12 @@ Attribution
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="multineas.util.Util.sin">
-<span class="sig-name descname"><span class="pre">sin</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ufunc</span> <span class="pre">'sin'&gt;</span></em><a class="headerlink" href="#multineas.util.Util.sin" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">sin</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ufunc</span> <span class="pre">'sin'&gt;</span></span><a class="headerlink" href="#multineas.util.Util.sin" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="multineas.util.Util.t_if">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">t_if</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multineas/util.html#Util.t_if"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multineas.util.Util.t_if" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">t_if</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multineas/util.html#Util.t_if"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multineas.util.Util.t_if" title="Link to this definition"></a></dt>
 <dd><p>Transform a set of parameters using a transformation function f and scales s.</p>
 <p>This routine allows the conversion from a finite interval [0,s] to an unbound one [-inf,inf]
 (using f=Util.f2u) or vice versa (using f=Util.u2f).</p>
@@ -533,7 +533,7 @@ If s[i] == 0, the parameter is unchanged.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="multineas.util.Util.u2f">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">u2f</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multineas/util.html#Util.u2f"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multineas.util.Util.u2f" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">u2f</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multineas/util.html#Util.u2f"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multineas.util.Util.u2f" title="Link to this definition"></a></dt>
 <dd><p>Convert from an unbound interval [-inf,inf] to a finite one [0,s].</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

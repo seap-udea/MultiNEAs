@@ -40,7 +40,7 @@ setuptools.setup(
         "License :: OSI Approved :: GNU Affero General Public License v3",
         "Operating System :: OS Independent",
     ],
-    version='0.2.19',
+    version='0.3.0',
 
     # ######################################################################
     # FILES
