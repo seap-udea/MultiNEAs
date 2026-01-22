@@ -19,7 +19,7 @@ help:
 	@echo "  upload       - Upload package to PyPI"
 	@echo "  upload-test  - Upload package to TestPyPI"
 	@echo "  docs         - Build documentation (installs docs requirements)"
-	@echo "  push         - Commit (tracked changes) and push current branch"
+	@echo "  push         - Commit (all files) and push current branch"
 	@echo "  release      - Release a new version (usage: make release RELMODE=release VERSION=x.y.z)"
 
 install:
@@ -59,8 +59,8 @@ docs:
 
 push:
 	@echo "Committing tracked changes (if any)..."
-	@if ! git diff --quiet || ! git diff --cached --quiet; then \
-		git add -u && \
+	@if ! git diff --quiet || ! git diff --cached --quiet || [ -n "$$(git status --porcelain)" ]; then \
+		git add . && \
 		git commit -m "$(COMMIT_MSG)"; \
 	else \
 		echo "Working tree is clean (tracked files); nothing to commit."; \
