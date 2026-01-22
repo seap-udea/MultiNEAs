@@ -16,7 +16,3 @@
    multimin
    plot
    util
-   
-------------
-
-Package documentation
