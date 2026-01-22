@@ -34,7 +34,6 @@ pygment_style = 'sphinx'
 html_theme = "pydata_sphinx_theme"
 html_static_path = ['_static']
 html_theme_options = {
-    "text": f"{project} {release} Documentation",
     "external_links": [
     {"name": "Source", "url": "https://github.com/seap-udea/MultiNEAs"},
   ]

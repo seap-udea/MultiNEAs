@@ -4,6 +4,7 @@
 
 .PHONY: help install install-dev test clean build upload upload-test docs push release
 RELMODE=release
+PYTHON ?= python3
 COMMIT_MSG ?= chore: sync tracked changes
 
 help:
@@ -17,7 +18,7 @@ help:
 	@echo "  build        - Build distribution packages"
 	@echo "  upload       - Upload package to PyPI"
 	@echo "  upload-test  - Upload package to TestPyPI"
-	@echo "  docs         - Build documentation"
+	@echo "  docs         - Build documentation (installs docs requirements)"
 	@echo "  push         - Commit (tracked changes) and push current branch"
 	@echo "  release      - Release a new version (usage: make release RELMODE=release VERSION=x.y.z)"
 
@@ -44,16 +45,17 @@ clean:
 	find . -type f -name '*.pyo' -delete
 
 build: clean
-	python -m build
+	$(PYTHON) -m build
 
 upload: build
-	python -m twine upload dist/*
+	$(PYTHON) -m twine upload dist/*
 
 upload-test: build
-	python -m twine upload --repository testpypi dist/*
+	$(PYTHON) -m twine upload --repository testpypi dist/*
 
 docs:
-	cd docs && make html
+	$(PYTHON) -m pip install -r docs/requirements.txt
+	cd docs && $(PYTHON) -m sphinx.cmd.build -M html "." "_build"
 
 push:
 	@echo "Committing tracked changes (if any)..."
