@@ -8,7 +8,9 @@
 
 <p></p>
 <div align="center">
+  <a href="https://multineas.readthedocs.io/">
   <img src="https://raw.githubusercontent.com/seap-udea/MultiNEAs/master/docs/MultiNEAs-logo.webp" alt="MultiNEAs Logo" width="600"/>
+  </a>
 </div>
 <p></p>
 
