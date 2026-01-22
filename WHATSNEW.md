@@ -52,3 +52,7 @@ Future versions will include:
 ---
 
 *This document will be updated with each new release.*
+
+## Attribution
+
+Most of this file was vibe coded by the authors using Gemini 3.5 in Antigravity.

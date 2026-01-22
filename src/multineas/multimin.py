@@ -685,6 +685,10 @@ class FitCMND():
     >>> F.save_fit("/tmp/fit.pkl", useprefix=False)
     >>> F._load_fit("/tmp/fit.pkl")
     >>> F.save_fit("/tmp/nuevo.pkl", useprefix=True, myprefix="test")
+    
+    Attribution
+    -----------
+    [HC] This class was mostly developed by human intelligences.
     """
     
     

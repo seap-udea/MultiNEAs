@@ -8,6 +8,10 @@ from multineas import ROOTDIR
 class Util(object):
     """
     This abstract class contains useful methods for the package.
+    
+    Attribution
+    -----------
+    [HC] This class was mostly developed by human intelligences.
     """ 
     
     #Mathematical functions
@@ -220,6 +224,10 @@ class Util(object):
 class Stats(object):
     """
     Abstract class with useful routines
+    
+    Attribution
+    -----------
+    [HC] This class was mostly developed by human intelligences.
     """
     #Golden ratio: required for golden gaussian.
     phi=(1+5**0.5)/2

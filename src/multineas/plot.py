@@ -57,6 +57,10 @@ class CornerPlot(object):
         Create a 2d-histograms of data on all panels of the CornerPlot.
     scatter_plot(data, **args)
         Scatter plot on all panels of the CornerPlot.
+    
+    Attribution
+    -----------
+    [HC] This class was mostly developed by human intelligences.
     """
     
     def __init__(self,properties,figsize=3,fontsize=10,direction='out'):

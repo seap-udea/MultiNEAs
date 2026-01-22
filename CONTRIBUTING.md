@@ -75,4 +75,8 @@ Contact the maintainers:
 - Jorge I. Zuluaga: jorge.zuluaga@udea.edu.co
 - Juanita A. Agudelo: juanita.agudelo@udea.edu.co
 
+## Attribution
+
+Most of this file was vibe coded by the authors using Gemini 3.5 in Antigravity.
+
 Thank you for contributing to MultiNEAs!
