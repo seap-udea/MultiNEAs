@@ -1,7 +1,5 @@
 # MultiNEAs
 
-## Numerical Tools for Near-Earth Asteroid Dynamics and Population
-
 [![version](https://img.shields.io/pypi/v/multineas?color=blue)](https://pypi.org/project/multineas/)
 [![downloads](https://img.shields.io/pypi/dw/multineas)](https://pypi.org/project/multineas/)
 [![license](https://img.shields.io/pypi/l/multineas)](https://pypi.org/project/multineas/)

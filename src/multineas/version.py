@@ -7,4 +7,4 @@
 # License: GNU Affero General Public License v3 (AGPL-3.0)        #
 ##################################################################
 
-__version__ = '0.2.10'
+__version__ = '0.2.11'
