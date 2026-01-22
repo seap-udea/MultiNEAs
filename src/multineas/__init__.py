@@ -34,7 +34,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # Package metadata
-__version__ = '0.2.17'
+__version__ = '0.2.18'
 __author__ = 'Jorge I. Zuluaga, Juanita A. Agudelo'
 __email__ = 'jorge.zuluaga@udea.edu.co, juanita.agudelo@udea.edu.co'
 __license__ = 'AGPL-3.0-only'

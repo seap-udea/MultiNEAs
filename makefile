@@ -72,7 +72,7 @@ data-update:
 	@bash bin/data_update.sh
 
 # Example: make release RELMODE=release VERSION=0.2.0.2
-release: clean push data-update
+release: clean docs data-update push
 	@test -n "$(VERSION)" || (echo "ERROR: VERSION is required. Example: make release RELMODE=release VERSION=0.2.0" && exit 1)
 	@echo "Releasing a new version..."
 	@bash bin/release.sh $(RELMODE) $(VERSION)
