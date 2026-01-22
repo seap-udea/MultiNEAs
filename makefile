@@ -2,7 +2,7 @@
 # MultiNEAs Makefile
 ##################################################################
 
-.PHONY: help install install-dev test clean build upload upload-test docs push release
+.PHONY: help install install-dev test clean build docs push release
 RELMODE=release
 PYTHON ?= python3
 COMMIT_MSG ?= chore: sync tracked changes
@@ -16,8 +16,7 @@ help:
 	@echo "  test         - Run tests with pytest"
 	@echo "  clean        - Remove build artifacts and cache files"
 	@echo "  build        - Build distribution packages"
-	@echo "  upload       - Upload package to PyPI"
-	@echo "  upload-test  - Upload package to TestPyPI"
+
 	@echo "  docs         - Build documentation (installs docs requirements)"
 	@echo "  push         - Commit (all files) and push current branch"
 	@echo "  release      - Release a new version (usage: make release RELMODE=release VERSION=x.y.z)"
@@ -46,12 +45,6 @@ clean:
 
 build: clean
 	$(PYTHON) -m build
-
-upload: build
-	$(PYTHON) -m twine upload dist/*
-
-upload-test: build
-	$(PYTHON) -m twine upload --repository testpypi dist/*
 
 docs:
 	$(PYTHON) -m pip install -r docs/requirements.txt
