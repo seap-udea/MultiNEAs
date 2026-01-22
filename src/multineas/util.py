@@ -9,9 +9,7 @@ class Util(object):
     """
     This abstract class contains useful methods for the package.
     
-    Attribution
-    -----------
-    [HC] This class was mostly developed by human intelligences.
+    Attr. [HC]
     """ 
     
     #Mathematical functions
@@ -55,6 +53,9 @@ class Util(object):
         --------
         >>> from multineas.util import Util
         >>> path=Util.get_data("nea_extended.json.gz")
+        Attribution
+        -----------
+        [HC] This function was mostly developed by human intelligences.
         """
         return os.path.join(ROOTDIR, 'data', filename)
 
@@ -74,6 +75,9 @@ class Util(object):
         -------
         u : float or array_like
             Unbound value.
+        Attribution
+        -----------
+        [HC] This function was mostly developed by human intelligences.
         """
         return Util.log((x/s)/(1-(x/s)))
 
@@ -93,6 +97,9 @@ class Util(object):
         -------
         x : float or array_like
             Value in the interval [0,s].
+        Attribution
+        -----------
+        [HC] This function was mostly developed by human intelligences.
         """
         return s/(1+Util.exp(-t))
 
@@ -126,6 +133,9 @@ class Util(object):
         >>> uparams = Util.t_if(minparams, scales, Util.f2u)
         >>> print(uparams)
         [0.0, 0.0, -2.197224577336219, -2.197224577336219, 0.8472978603872034]
+        Attribution
+        -----------
+        [HC] This function was mostly developed by human intelligences.
         """
         return [f(p[i],s[i]) if s[i]>0 else p[i] for i in range(len(p))]
 
@@ -139,6 +149,9 @@ class Util(object):
             Error handle (eg. except ValueError as error).
         msg : str
             Message to add to error.
+            Attribution
+            -----------
+            [HC] This class was mostly developed by human intelligences.
         """
         error.args=(error.args if error.args else tuple())+(msg,)
 
@@ -174,6 +187,9 @@ class Util(object):
         >>> Util.el_time(verbose=0) # no output
         >>> Util.el_time(start=True) # measure elapsed time since program start
         >>> print(Util.DTIME, Util.DUTIME) # show values of elapsed time
+            Attribution
+            -----------
+            [HC] This class was mostly developed by human intelligences.
         """
         t=time()
         dt=t-Util.TIME
@@ -211,6 +227,9 @@ class Util(object):
         # returns m=2.345, e=2
         >>> m, e = Util.mantisa_exp(-0.000023213)
         # return m=-2.3213, e=-5
+            Attribution
+            -----------
+            [HC] This class was mostly developed by human intelligences.
         """
         xa=np.abs(x)
         s=np.sign(x)
@@ -225,9 +244,7 @@ class Stats(object):
     """
     Abstract class with useful routines
     
-    Attribution
-    -----------
-    [HC] This class was mostly developed by human intelligences.
+    Attr. [HC]
     """
     #Golden ratio: required for golden gaussian.
     phi=(1+5**0.5)/2
@@ -254,6 +271,9 @@ class Stats(object):
         Examples
         --------
         >>> n = Stats.gen_index([0.1, 0.7, 0.2])
+            Attribution
+            -----------
+            [HC] This class was mostly developed by human intelligences.
         """
         cums=np.cumsum(probs)
         if not math.isclose(cums[-1],1,rel_tol=1e-5):
@@ -288,6 +308,9 @@ class Stats(object):
         [[1. , 0.1, 0.2],
          [0.1, 1. , 0.3],
          [0.2, 0.3, 1. ]]
+            Attribution
+            -----------
+            [HC] This class was mostly developed by human intelligences.
         """
         I,J=np.where(~np.eye(M.shape[0],dtype=bool))
         ffo=list(off[::-1])
@@ -340,6 +363,9 @@ class Stats(object):
         Sources
         -------
         Based on: https://www.visiondummy.com/2014/04/geometric-interpretation-covariance-matrix/
+            Attribution
+            -----------
+            [HC] This class was mostly developed by human intelligences.
         """
         try:
             Nvars=len(sigmas[0])        
@@ -388,6 +414,9 @@ class Stats(object):
         [1. 2. 3.]
         >>> print(rhos)
         [[0.1 0.2 0.3]]
+            Attribution
+            -----------
+            [HC] This class was mostly developed by human intelligences.
         """
         if len(np.array(Sigmas).shape)!=3:
             raise AssertionError(f"Array of Sigmas (shape {np.array(Sigmas).shape}) must be an array of matrices")
@@ -417,6 +446,9 @@ class Stats(object):
         -------
         Sigmas : numpy.ndarray
             Array with covariance matrices corresponding to these sigmas and angles (Ngauss x 3 x 3).
+            Attribution
+            -----------
+            [HC] This class was mostly developed by human intelligences.
         """
         try:
             Nvars=len(sigmas[0])        
@@ -450,6 +482,9 @@ class Stats(object):
         >>> F = Stats.flatten_symmetric_matrix(M)
         >>> print(F)
         [1.  0.2 3. ]
+            Attribution
+            -----------
+            [HC] This class was mostly developed by human intelligences.
         """
         return M[np.triu_indices(M.shape[0], k = 0)]
 
@@ -477,6 +512,9 @@ class Stats(object):
         >>> print(M)
         [[1.  0.2]
          [0.2 3. ]]
+            Attribution
+            -----------
+            [HC] This class was mostly developed by human intelligences.
         """
         M[np.triu_indices(M.shape[0],k=0)]=np.array(F)
         M[:,:]=np.triu(M)+np.tril(M.T,-1)

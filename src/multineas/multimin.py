@@ -75,10 +75,6 @@ class ComposedMultiVariateNormal(object):
     >>> params = [0.1, 0.9, 0, 0, 1, 1, 1, 0.2, 0.2, 1, 1, 0, 0, 1]
     >>> MND2 = ComposedMultiVariateNormal(params=params, Nvars=2)        
     >>> print(MND2)
-
-    Attribution
-    -----------
-    [HC] This class was mostly developed by human intelligences.
     """
     
     #Control behavior
@@ -148,6 +144,8 @@ class ComposedMultiVariateNormal(object):
         ----------
         Sigmas : list or numpy.ndarray
             Array of covariance matrices.
+        
+        Attr. [HC]    
         """
         self.Sigmas=np.array(Sigmas)
         self._check_sigmas()
@@ -166,6 +164,8 @@ class ComposedMultiVariateNormal(object):
             Flattened parameters.
         Nvars : int
             Number of variables.
+        
+        Attr. [HC]
         """
         if Nvars==0 or len(params)==0:
             raise ValueError(f"When setting from flat params, Nvars ({Nvars}) cannot be zero")
@@ -185,6 +185,8 @@ class ComposedMultiVariateNormal(object):
             Flattened standard deviations and correlations.
         Nvars : int
             Number of variables.
+        
+        Attr. [HC]
         """
         if Nvars==0 or len(stdcorr)==0:
             raise ValueError(f"When setting from flat params, Nvars ({Nvars}) cannot be zero")
@@ -195,12 +197,16 @@ class ComposedMultiVariateNormal(object):
     def _normalize_weights(self,weights):
         """
         Normalize weights in such a way that sum(weights)=1
+        
+        Attr. [HC]
         """
         self.weights=np.array(weights)/sum(np.array(weights))
             
     def _flatten_params(self):
         """
         Flatten params
+        
+        Attr. [HC]
         """
         self._check_params(self.Sigmas)
         
@@ -214,6 +220,8 @@ class ComposedMultiVariateNormal(object):
     def _flatten_stdcorr(self):
         """
         Flatten stdcorr
+        
+        Attr. [HC]
         """
         self._check_params(self.sigmas)
         
@@ -228,6 +236,8 @@ class ComposedMultiVariateNormal(object):
     def _unflatten_params(self,params,Nvars):
         """
         Unflatten properties from params
+        
+        Attr. [HC]
         """
 
         self.params=np.array(params)
@@ -272,6 +282,8 @@ class ComposedMultiVariateNormal(object):
     def _unflatten_stdcorr(self,stdcorr,Nvars):
         """
         Unflatten properties from stdcorr
+        
+        Attr. [HC]
         """
 
         self.stdcorr=np.array(stdcorr)
@@ -323,6 +335,8 @@ class ComposedMultiVariateNormal(object):
     def _check_sigmas(self):
         """
         Check value of sigmas
+        
+        Attr. [HC]
         """
         self._check_params(self.Sigmas)
         
@@ -346,6 +360,11 @@ class ComposedMultiVariateNormal(object):
         self.sigmas,self.rhos=Stats.calc_correlations_from_covariances(self.Sigmas)
 
     def _check_params(self,checkvar=None):
+        """
+        Check if parameters are set.
+        
+        Attr. [HC]
+        """
         if checkvar is None:
             raise AssertionError("You must first set the parameters (Sigmas, mus, etc.)")
 
@@ -362,6 +381,8 @@ class ComposedMultiVariateNormal(object):
         -------
         p : float
             PDF value at X.
+        
+        Attr. [HC]
         """
         self._check_params(self.params)
         self._nerror=0
@@ -385,11 +406,13 @@ class ComposedMultiVariateNormal(object):
         ----------
         Nsam : int, optional
             Number of samples (default 1).
-            
+        
         Returns
         -------
         rs : numpy.ndarray
             Samples (Nsam x Nvars).
+        
+        Attr. [HC]
         """
         self._check_params(self.params)
         
@@ -427,6 +450,8 @@ class ComposedMultiVariateNormal(object):
         -------
         log_l : float
             Negative log-likelihood.
+        
+        Attr. [HC]
         """
         #Map unbound minimization parameters into their right range
         minparams=np.array(Util.t_if(uparams,scales,Util.u2f))
@@ -478,12 +503,12 @@ class ComposedMultiVariateNormal(object):
             Dictionary with options for the scatter plot. Ex. sargs=dict(color='r').
         hargs : dict, optional
             Dictionary with options for the hist2d function. Ex. hargs=dict(bins=50).
-            
+        
         Returns
         -------
         G : matplotlib.figure.Figure or CornerPlot
             Graphic handle. If Nvars = 2, it is a figure object, otherwise is a CornerPlot instance.
-            
+        
         Examples
         --------
         >>> G = CMND.plot_sample(N=10000, sargs=dict(s=1, c='r'))
@@ -505,6 +530,8 @@ class ComposedMultiVariateNormal(object):
         >>> MND2 = ComposedMultiVariateNormal(params=params, Nvars=2)        
         >>> print(MND2)
         >>> print(MND2.pdf([1, 1]))
+        
+        Attr. [HC]
         """
         if data is None:
             self.data=self.rvs(N)
@@ -686,9 +713,6 @@ class FitCMND():
     >>> F._load_fit("/tmp/fit.pkl")
     >>> F.save_fit("/tmp/nuevo.pkl", useprefix=True, myprefix="test")
     
-    Attribution
-    -----------
-    [HC] This class was mostly developed by human intelligences.
     """
     
     
@@ -698,6 +722,13 @@ class FitCMND():
     _ignoreWarnings=True
     
     def __init__(self,objfile=None,Ngauss=1,Nvars=2):
+        """
+        Initialize FitCMND object.
+    
+        Attribution
+        -----------
+        [HC] This method was mostly developed by human intelligences.
+        """
         
         if objfile is not None:
             self._load_fit(objfile)
@@ -863,6 +894,13 @@ class FitCMND():
         self._update_prefix()
             
     def _load_fit(self,objfile):
+        """
+        Load a fit object from file.
+    
+        Attribution
+        -----------
+        [HC] This method was mostly developed by human intelligences.
+        """
         F=pickle.load(open(objfile,"rb"))
         for k in F.__dict__.keys():
             setattr(self,k,getattr(F,k))
@@ -930,6 +968,13 @@ class FitCMND():
             return fig
         
     def _inv_params(self,stdcorr):
+        """
+        Invert stdcorr to minparams.
+    
+        Attribution
+        -----------
+        [HC] This method was mostly developed by human intelligences.
+        """
         minparams=np.copy(stdcorr)
         minparams[-self.Ngauss*self.Ncorr:]+=1
         self.minparams=minparams[1:] if self.Ngauss==1 else minparams

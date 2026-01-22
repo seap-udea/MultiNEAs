@@ -58,9 +58,6 @@ class CornerPlot(object):
     scatter_plot(data, **args)
         Scatter plot on all panels of the CornerPlot.
     
-    Attribution
-    -----------
-    [HC] This class was mostly developed by human intelligences.
     """
     
     def __init__(self,properties,figsize=3,fontsize=10,direction='out'):
@@ -142,6 +139,8 @@ class CornerPlot(object):
     def tight_layout(self):
         """
         Tight layout if no constrained_layout was used.
+        
+        Attr. [HC]
         """
         if self.constrained==False:
             self.fig.subplots_adjust(wspace=self.fw/100.,hspace=self.fw/100.)
@@ -155,6 +154,8 @@ class CornerPlot(object):
         ----------
         **args : dict
             Same arguments as tick_params method.
+        
+        Attr. [HC]
         """
         opts=dict(axis='both',which='major',labelsize=0.8*self.fs)
         opts.update(args)
@@ -165,6 +166,8 @@ class CornerPlot(object):
     def set_ranges(self):
         """
         Set ranges in panels according to ranges defined in dparameters.
+        
+        Attr. [HC]
         """
         for i,propi in enumerate(self.properties):
             for j,propj in enumerate(self.properties):
@@ -182,6 +185,8 @@ class CornerPlot(object):
         ----------
         **args : dict
             Common arguments of set_xlabel, set_ylabel and text.
+        
+        Attr. [HC]
         """
         opts=dict(fontsize=self.fs)
         opts.update(args)
@@ -240,6 +245,8 @@ class CornerPlot(object):
         >>> G = mm.CornerPlot(properties, figsize=3)
         >>> hargs = dict(bins=100, cmap='viridis')
         >>> hist = G.plot_hist(udata, **hargs)
+        
+        Attr. [HC]
         """
         opts=dict()
         opts.update(args)
@@ -307,11 +314,13 @@ class CornerPlot(object):
         -------
         scatter : list
             List of scatter instances.
-            
+        
         Examples
         --------
         >>> sargs = dict(s=0.2, edgecolor='None', color='r')
         >>> hist = G.scatter_plot(udata, **sargs)
+        
+        Attr. [HC]
         """
         scatter=[]
         for i,propi in enumerate(self.properties):
