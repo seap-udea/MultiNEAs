@@ -9,7 +9,7 @@
 [![Powered by SpiceyPy](https://img.shields.io/badge/Powered%20by-SpiceyPy-blue)](https://github.com/AndrewAnnex/SpiceyPy)
 
 <div align="center">
-  <img src="docs/MultiNEAs-logo.webp" alt="MultiNEAs Logo" width="600"/>
+  <img src="https://raw.githubusercontent.com/seap-udea/MultiNEAs/master/docs/MultiNEAs-logo.webp" alt="MultiNEAs Logo" width="600"/>
 </div>
 
 `MultiNEAs` is a `Python` package designed to provide numerical tools for studying the dynamics and population of Near-Earth Asteroids (NEAs). The package offers a comprehensive suite of utilities for orbital calculations, statistical analysis, and visualization of NEA populations.
@@ -104,10 +104,6 @@ If you use `MultiNEAs` in your research, please cite:
 
 This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0) - see the [LICENSE](LICENSE) file for details.
 
-## Attribution
-
-Authors vibe coded most of this file using in Chat GPT 5.2 in Antigravity.
-
 ## Authors
 
 - **Jorge I. Zuluaga** - jorge.zuluaga@udea.edu.co
@@ -120,6 +116,10 @@ This package is being developed at the Solar, Earth and Planetary Physics Group 
 ## What's New
 
 For a detailed list of changes and new features, see [WHATSNEW.md](WHATSNEW.md).
+
+## File attribution
+
+Most of this file was vibe coded by the authors using Gemini 3.5 in Antigravity.
 
 ---
 
