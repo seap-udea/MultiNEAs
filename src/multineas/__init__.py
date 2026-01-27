@@ -71,12 +71,20 @@ class MultiNEAsBase:
         return f"{self.__class__.__name__}({self.__dict__})"
 
 
-# Placeholder for future imports
-# When you add modules, uncomment and modify these lines:
-# from multineas.core import *
-# from multineas.dynamics import *
-# from multineas.population import *
-# from multineas.visualization import *
+# Import main classes and functions from modules
+from .orbit import (
+    OrbitalCoordinates,
+    compute_orbital_period,
+    get_pre_impact_orbital_elements
+)
+from .probability import (
+    OrbitElementsPDF,
+    PhaseSpacePDF,
+    integrate,
+    marginalize,
+    compute_jacobian_qei_to_QEI
+)
+from .multimin import ComposedMultiVariateNormal, FitCMND
 
 # Package initialization message (optional, can be removed in production)
 def _welcome_message():

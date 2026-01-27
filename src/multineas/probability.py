@@ -114,6 +114,8 @@ class OrbitElementsPDF:
         >>> i = np.pi / 6  # 30 degrees
         >>> prob = pdf.compute_p_e_cmnd(q, e, i)
         >>> print(f"PDF: {prob:.6e}")
+
+        Attr. [HC]
         """
         # Transform orbital elements to unbound space
         element = np.array([q, e, i])
@@ -175,6 +177,8 @@ class PhaseSpacePDF:
     >>> vx, vy, vz = 0.0, 6.28, 0.0
     >>> prob = pdf.compute_p_x_cmnd(x, y, z, vx, vy, vz)
     >>> print(f"PDF: {prob:.6e}")
+
+    Attr. [HC]
     """
     
     # Constants for NEA orbit validation
@@ -255,6 +259,8 @@ class PhaseSpacePDF:
         >>> vy_vals = np.full(10, 6.28)
         >>> vz_vals = np.zeros(10)
         >>> probs = pdf.compute_p_x_cmnd(x_vals, y_vals, z_vals, vx_vals, vy_vals, vz_vals)
+
+        Attr. [HC]
         """
         # Convert inputs to arrays and get broadcast shape
         x = np.asarray(x)
@@ -353,6 +359,8 @@ def compute_jacobian_qei_to_QEI(q: float, e: float, i: float,
     >>> q_max, e_max, i_max = 1.35, 1.0, np.pi
     >>> J = compute_jacobian_qei_to_QEI(q, e, i, q_max, e_max, i_max)
     >>> print(f"Jacobian determinant: {np.linalg.det(J):.6e}")
+    
+    Attr. [HC]
     """
     partialQ_q = q_max / (q * (q_max - q))
     partialQ_e = 0
@@ -419,6 +427,8 @@ def integrate(center: Union[Tuple, List, np.ndarray], widths: Union[Tuple, List,
     >>> max_elements = [1.35, 1.0, np.pi]
     >>> integral = integrate(center, widths, max_elements, pdf, n_points=6)
     >>> print(f"Integral: {integral:.6e}")
+
+    Attr. [MC]
     """
     from numpy.polynomial.legendre import leggauss
     
@@ -514,6 +524,8 @@ def marginalize(center: Union[Tuple, List, np.ndarray], widths: Union[Tuple, Lis
     >>> integral = marginalize(center_v, widths_v, fixed_pos, max_elements, pdf, 
     ...                        integrate_over='velocity', n_points=6)
     >>> print(f"Integral: {integral:.6e}")
+    
+    Attr. [MC]
     """
     from numpy.polynomial.legendre import leggauss
     
