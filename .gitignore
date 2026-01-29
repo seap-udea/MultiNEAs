@@ -19,3 +19,6 @@ contrib
 examples/products/*
 .multineas/
 docs/_build/
+
+**/pymcel/
+**/kernels/
