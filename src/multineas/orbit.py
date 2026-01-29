@@ -3,11 +3,38 @@ Orbital coordinate transformation utilities.
 
 This module provides tools for converting between Cartesian coordinates (position and velocity)
 and orbital elements, as well as computing Jacobian matrices for these transformations.
+It also includes coordinate transformations from geographic to ecliptic coordinates and
+orbit integration capabilities using REBOUND.
 """
 
 import numpy as np
 from scipy.optimize import newton
 import spiceypy as spy
+from typing import Optional, Union, List, Tuple
+import rebound as rb
+from astropy.time import Time
+import os
+import sys
+from contextlib import contextmanager
+
+
+@contextmanager
+def _suppress_stdout_stderr():
+    """
+    Context manager to suppress stdout and stderr.
+    
+    This is used to hide REBOUND's verbose output when querying JPL Horizons.
+    """
+    with open(os.devnull, 'w') as devnull:
+        old_stdout = sys.stdout
+        old_stderr = sys.stderr
+        try:
+            sys.stdout = devnull
+            sys.stderr = devnull
+            yield
+        finally:
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
 
 
 def _kepler_equation(E, M, e):
@@ -521,3 +548,425 @@ class OrbitalCoordinates:
         JX2c = np.matmul(J, Je2c)
         
         return JX2c
+    
+    @staticmethod
+    def geo_to_rec(lon: float, lat: float, alt: float) -> np.ndarray:
+        """
+        Convert geodetic coordinates (latitude, longitude, altitude) to rectangular
+        coordinates in Earth-fixed frame (ITRF93).
+        
+        This function converts geographic coordinates on Earth's surface to Cartesian
+        coordinates in the Earth-fixed reference frame, accounting for Earth's ellipsoidal
+        shape.
+        
+        Parameters
+        ----------
+        lon : float
+            Geodetic longitude [degrees]. Positive eastward.
+        lat : float
+            Geodetic latitude [degrees]. Positive northward.
+        alt : float
+            Altitude above Earth's reference spheroid [km].
+            
+        Returns
+        -------
+        numpy.ndarray
+            Position vector [x, y, z] in Earth-fixed frame (ITRF93) [km].
+            
+        Examples
+        --------
+        >>> from multineas.orbit import OrbitalCoordinates
+        >>> 
+        >>> oc = OrbitalCoordinates()
+        >>> # Chelyabinsk impact location
+        >>> lon = 61.1  # degrees
+        >>> lat = 54.8  # degrees
+        >>> alt = 30.0  # km
+        >>> 
+        >>> r = oc.geo2rec(lon, lat, alt)
+        >>> print(f"Position vector: {r} km")
+        >>> print(f"Magnitude: {np.linalg.norm(r):.2f} km")
+        
+        Notes
+        -----
+        This function uses SPICE routines to account for Earth's ellipsoidal shape.
+        The equatorial and polar radii are obtained from SPICE kernel data.
+        """
+        deg = np.pi / 180
+        
+        lon_rad = lon * deg
+        lat_rad = lat * deg
+        
+        # Get Earth's radii from SPICE
+        n, props = spy.bodvrd('399', 'RADII', 3)
+        RE_spice = props[0]  # Equatorial radius
+        RP_spice = props[2]  # Polar radius
+        f_spice = (RE_spice - RP_spice) / RE_spice  # Flattening coefficient
+        
+        # Convert geodetic to rectangular coordinates
+        r_earth_fixed = spy.georec(lon_rad, lat_rad, alt, RE_spice, f_spice)
+        
+        return r_earth_fixed
+    
+    @staticmethod
+    def geo_to_eclip(lon: float, lat: float, alt: float, 
+                  date: Optional[str] = None, 
+                  et: Optional[float] = None,
+                  frame: str = 'ITRF93') -> np.ndarray:
+        """
+        Convert geodetic coordinates to ecliptic J2000 coordinates.
+        
+        Converts geographic coordinates (latitude, longitude, altitude) of an impact
+        event on Earth to ecliptic J2000 coordinates. This transformation accounts
+        for Earth's rotation and applies the coordinate transformation from Earth-fixed
+        to the inertial ecliptic frame.
+        
+        Parameters
+        ----------
+        lon : float
+            Geodetic longitude [degrees].
+        lat : float
+            Geodetic latitude [degrees].
+        alt : float
+            Altitude above Earth's reference spheroid [km].
+        date : str, optional
+            UTC date and time in format 'YYYY-MM-DD HH:MM:SS'. Must be provided
+            if et is not provided.
+        et : float, optional
+            Ephemeris time (ET) in seconds past J2000. Must be provided if date
+            is not provided.
+        frame : str, default 'ITRF93'
+            Earth-fixed reference frame. Default is 'ITRF93'.
+            
+        Returns
+        -------
+        numpy.ndarray
+            Position vector [x, y, z] in Ecliptic J2000 frame [km].
+            
+        Examples
+        --------
+        >>> from multineas.orbit import OrbitalCoordinates
+        >>> 
+        >>> oc = OrbitalCoordinates()
+        >>> # Chelyabinsk impact
+        >>> lon = 61.1
+        >>> lat = 54.8
+        >>> alt = 30.0
+        >>> date = '2013-02-15 03:20:33'
+        >>> 
+        >>> r_eclip = oc.geo2eclip(lon, lat, alt, date=date)
+        >>> print(f"Ecliptic coordinates: {r_eclip} km")
+        >>> print(f"Magnitude: {np.linalg.norm(r_eclip):.2f} km")
+        
+        Notes
+        -----
+        The function first converts geodetic coordinates to Earth-centered Cartesian
+        coordinates in the ITRF93 frame, then applies a transformation matrix to convert
+        from ITRF93 (Earth-fixed) to ECLIPJ2000 (inertial, ecliptic-based) frame.
+        This transformation is necessary for orbital calculations, ensuring the position
+        is in an inertial reference frame.
+        """
+        deg = np.pi / 180
+        
+        lon_rad = lon * deg
+        lat_rad = lat * deg
+        
+        # Get Earth's radii from SPICE
+        n, props = spy.bodvrd('399', 'RADII', 3)
+        RE_spice = props[0]
+        RP_spice = props[2]
+        f_spice = (RE_spice - RP_spice) / RE_spice
+        
+        # Convert geodetic to rectangular coordinates in Earth-fixed frame
+        r_earth_fixed = spy.georec(lon_rad, lat_rad, alt, RE_spice, f_spice)
+        
+        # Convert ephemeris time if date is provided
+        if date is not None:
+            if et is not None:
+                raise ValueError("Provide either 'date' or 'et', not both")
+            et = spy.utc2et(date)
+        elif et is None:
+            raise ValueError("Either 'date' or 'et' must be provided")
+        
+        # Transform from Earth-fixed to Ecliptic J2000 frame
+        M_ecl = spy.pxform(frame, 'ECLIPJ2000', et)
+        r_earth_ecl = spy.mxv(M_ecl, r_earth_fixed)
+        
+        return r_earth_ecl
+    
+    @staticmethod
+    def get_velocity_ecliptic(vx: float, vy: float, vz: float,
+                              lon: float, lat: float, alt: float,
+                              date: Optional[str] = None,
+                              et: Optional[float] = None) -> np.ndarray:
+        """
+        Convert velocity vector from Earth-fixed to ecliptic J2000 coordinates.
+        
+        This function takes a velocity vector in Earth-fixed coordinates and converts it
+        to ecliptic J2000 coordinates, accounting for Earth's rotation. The observed
+        velocity is corrected by adding the contribution from Earth's rotation.
+        
+        Parameters
+        ----------
+        vx, vy, vz : float
+            Velocity components in Earth-fixed coordinates [km/s].
+        lon, lat : float
+            Geodetic longitude and latitude of the observation point [degrees].
+        alt : float
+            Altitude above Earth's reference spheroid [km].
+        date : str, optional
+            UTC date and time in format 'YYYY-MM-DD HH:MM:SS'. Must be provided
+            if et is not provided.
+        et : float, optional
+            Ephemeris time (ET) in seconds past J2000. Must be provided if date
+            is not provided.
+            
+        Returns
+        -------
+        numpy.ndarray
+            Velocity vector [vx, vy, vz] in Ecliptic J2000 coordinates [km/s].
+            
+        Examples
+        --------
+        >>> from multineas.orbit import OrbitalCoordinates
+        >>> 
+        >>> oc = OrbitalCoordinates()
+        >>> # Chelyabinsk impact velocity
+        >>> vx, vy, vz = 3.5, -12.8, -6.3  # km/s
+        >>> lon, lat, alt = 61.1, 54.8, 30.0
+        >>> date = '2013-02-15 03:20:33'
+        >>> 
+        >>> v_eclip = oc.get_velocity_ecliptic(vx, vy, vz, lon, lat, alt, date=date)
+        >>> print(f"Ecliptic velocity: {v_eclip} km/s")
+        
+        Notes
+        -----
+        The function accounts for Earth's rotation by adding the cross product
+        of Earth's angular velocity and the position vector to the input velocity.
+        This correction is necessary because the observed velocity is measured in
+        the Earth-fixed frame, but orbital calculations require velocities in an
+        inertial frame.
+        """
+        # Input validation
+        if date is not None and et is not None:
+            raise ValueError("Provide either 'date' or 'et', not both")
+        if date is None and et is None:
+            raise ValueError("Either 'date' or 'et' must be provided")
+        
+        # Convert velocity to numpy array
+        v = np.array([vx, vy, vz])
+        
+        # Get position vector in Earth-fixed coordinates
+        r = OrbitalCoordinates.geo_to_rec(lon, lat, alt)
+        
+        # Earth's rotation parameters
+        t_sidereal = 86164.09053083288  # Sidereal day in seconds
+        w_earth = 2 * np.pi / t_sidereal  # Earth's angular velocity [rad/s]
+        omega = np.array([0, 0, w_earth])
+        
+        # Add Earth's rotation contribution to velocity
+        v_E = v + spy.vcrss(omega, r)  # Velocity in Earth-fixed frame [km/s]
+        
+        # Convert ephemeris time if date is provided
+        if date is not None:
+            et = spy.utc2et(date)
+        
+        # Transform from Earth-fixed to ecliptic J2000 coordinates
+        mx = spy.pxform('ITRF93', 'ECLIPJ2000', et)
+        v_eclip = spy.mxv(mx, v_E)
+        
+        return v_eclip
+
+    @staticmethod
+    def get_asteroid_state_vector(r_eclip: np.ndarray, v_eclip: np.ndarray, date: str) -> np.ndarray:
+        """
+        Get asteroid position in Ecliptic J2000 coordinates.
+        
+        This function takes the asteroid's position and velocity in Ecliptic J2000 coordinates
+        and returns the asteroid's position in Ecliptic J2000 coordinates.
+        """
+        rb.horizons.SSL_CONTEXT = 'unverified'
+
+        sim = rb.Simulation()
+        sim.units = 'km', 's', 'kg'
+        sim.integrator = "IAS15"
+        sim.dt = -86400
+
+        time = Time(date, format="iso")
+
+        # Suppress REBOUND's verbose output when querying Horizons
+        with _suppress_stdout_stderr():
+            for i in ["Sun", "199", "299", "399", "499", "599", "699", "799", "899"]:
+                sim.add(i, hash=f"{i}", date=f"JD{time.tdb.jd}")
+
+        r_earth = np.array(sim.particles["399"].xyz)
+        v_earth = np.array(sim.particles["399"].vxyz)
+
+        r_asteroid = r_eclip + r_earth 
+        v_asteroid = v_eclip + v_earth #así si es 
+        
+        return np.concatenate([r_asteroid, v_asteroid])
+
+
+def compute_orbital_period(a: float, mu: float) -> float:
+    """
+    Compute orbital period using Kepler's third law.
+    
+    Calculates the orbital period of a body in a Keplerian orbit using
+    Kepler's third law: T = 2π * sqrt(a³/μ), where T is the period,
+    a is the semi-major axis, and μ is the gravitational parameter.
+    
+    Parameters
+    ----------
+    a : float
+        Semi-major axis [km] or [AU] (must match units of mu).
+    mu : float
+        Gravitational parameter [km³/s²] or [AU³/day²] (must match units of a).
+        
+    Returns
+    -------
+    float
+        Orbital period [s] or [day] (matches time units implied by mu).
+        
+    Examples
+    --------
+    >>> from multineas.orbit import compute_orbital_period
+    >>> import numpy as np
+    >>> 
+    >>> # Earth's orbit (approximately)
+    >>> a = 1.0  # AU
+    >>> mu = 0.01720209895**2  # AU³/day²
+    >>> 
+    >>> period = compute_orbital_period(a, mu)
+    >>> print(f"Orbital period: {period:.2f} days")
+    >>> print(f"Orbital period: {period/365.25:.2f} years")
+    >>> 
+    >>> # Chelyabinsk-like orbit
+    >>> a_km = 1.73 * 149597870  # km
+    >>> mu_km = 1.32712440018e11  # km³/s² (Sun)
+    >>> period_s = compute_orbital_period(a_km, mu_km)
+    >>> print(f"Orbital period: {period_s/86400:.2f} days")
+    
+    Notes
+    -----
+    The units of the result depend on the units of the gravitational parameter:
+    - If mu is in [km³/s²], the period is in [s]
+    - If mu is in [AU³/day²], the period is in [day]
+    """
+    period = 2 * np.pi * np.sqrt(a**3 / mu)
+    return period
+
+
+def get_pre_impact_orbital_elements(lon: float, lat: float, alt: float,
+                                    vx: float, vy: float, vz: float,
+                                    date: str) -> list[float, float, float, 
+                                                                float, float, float]:
+    """
+    Compute pre-impact orbital elements from impact location and velocity.
+    
+    Given the geographic location and velocity of an impact event, this function
+    computes the orbital elements of the impactor before it entered Earth's
+    atmosphere. The function:
+    1. Converts geographic coordinates to ecliptic J2000 coordinates
+    2. Transforms the velocity to account for Earth's rotation
+    3. Converts the velocity to ecliptic J2000 coordinates
+    4. Computes orbital elements from the position and velocity
+    
+    Parameters
+    ----------
+    lon : float
+        Geodetic longitude [degrees].
+    lat : float
+        Geodetic latitude [degrees].
+    alt : float
+        Altitude above Earth's reference spheroid [km].
+    vx, vy, vz : float
+        Velocity components in Earth-fixed coordinates [km/s].
+    date : str
+        UTC date and time in format 'YYYY-MM-DD HH:MM:SS'.
+    mu : float
+        Gravitational parameter [km³/s²] or [AU³/day²]. Note: if using km/s for
+        velocity, use km³/s² for mu. If using AU/day for velocity, use AU³/day².
+        
+    Returns
+    -------
+    q : float
+        Periapsis distance [same units as position].
+    e : float
+        Eccentricity (dimensionless).
+    i : float
+        Inclination [radians].
+    Omega : float
+        Longitude of ascending node [radians].
+    w : float
+        Argument of periapsis [radians].
+    M : float
+        Mean anomaly [radians].
+    a : float
+        Semi-major axis [same units as position].
+        
+    Examples
+    --------
+    >>> from multineas.orbit import get_pre_impact_orbital_elements
+    >>> 
+    >>> # Chelyabinsk impact
+    >>> lon, lat, alt = 61.1, 54.8, 30.0
+    >>> vx, vy, vz = 3.5, -12.8, -6.3  # km/s
+    >>> date = '2013-02-15 03:20:33'
+    >>> mu = 1.32712440018e11  # km³/s² (Sun)
+    >>> 
+    >>> q, e, i, Omega, w, M, a = get_pre_impact_orbital_elements(
+    ...     lon, lat, alt, vx, vy, vz, date, mu
+    ... )
+    >>> print(f"Semi-major axis: {a/149597870:.2f} AU")
+    >>> print(f"Eccentricity: {e:.3f}")
+    >>> print(f"Inclination: {i*180/np.pi:.1f} degrees")
+    
+    Notes
+    -----
+    This function computes the orbital elements relative to the central body (Sun).
+    To get the heliocentric orbit, you need to add Earth's position and velocity
+    to the impactor's position and velocity. See `OrbitIntegration` class for
+    a complete integration including planetary perturbations.
+    """
+    oc = OrbitalCoordinates()
+    
+    # Convert geographic coordinates to ecliptic J2000
+    r_eclip = oc.geo_to_eclip(lon, lat, alt, date=date)
+    
+    # Convert velocity to ecliptic J2000
+    v_eclip = oc.get_velocity_ecliptic(vx, vy, vz, lon, lat, alt, date=date)
+
+    rb.horizons.SSL_CONTEXT = 'unverified'
+
+    AU = 149597870 #km
+    day = 86400
+
+    sim = rb.Simulation()
+    sim.units = 'km', 's', 'kg'
+    sim.integrator = "IAS15"
+    sim.dt = -86400
+
+    time = Time(date, format="iso")
+
+    # Suppress REBOUND's verbose output when querying Horizons
+    with _suppress_stdout_stderr():
+        for i in ["Sun", "199", "299", "399", "499", "599", "699", "799", "899"]:
+            sim.add(i, hash=f"{i}", date=f"JD{time.tdb.jd}")
+
+
+    r_earth = np.array(sim.particles["399"].xyz)
+    v_earth = np.array(sim.particles["399"].vxyz)
+
+    r_asteroid = r_eclip + r_earth 
+    v_asteroid = v_eclip + v_earth #así si es 
+
+    asteroid = sim.add(x=r_asteroid[0], y=r_asteroid[1], z=r_asteroid[2], 
+                    vx=v_asteroid[0], vy=v_asteroid[1], vz=v_asteroid[2], hash="asteroid")
+
+    sim.move_to_hel()
+    asteroid = sim.particles["asteroid"]
+    o = asteroid.orbit()
+    asteroid_orbit_elements = [o.a, o.e, o.inc, o.Omega, o.omega, o.f] 
+    
+    return asteroid_orbit_elements
