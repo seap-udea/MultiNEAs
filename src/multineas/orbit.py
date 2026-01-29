@@ -11,6 +11,30 @@ import numpy as np
 from scipy.optimize import newton
 import spiceypy as spy
 from typing import Optional, Union, List, Tuple
+import rebound as rb
+from astropy.time import Time
+import os
+import sys
+from contextlib import contextmanager
+
+
+@contextmanager
+def _suppress_stdout_stderr():
+    """
+    Context manager to suppress stdout and stderr.
+    
+    This is used to hide REBOUND's verbose output when querying JPL Horizons.
+    """
+    with open(os.devnull, 'w') as devnull:
+        old_stdout = sys.stdout
+        old_stderr = sys.stderr
+        try:
+            sys.stdout = devnull
+            sys.stderr = devnull
+            yield
+        finally:
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
 
 
 def _kepler_equation(E, M, e):
@@ -526,7 +550,7 @@ class OrbitalCoordinates:
         return JX2c
     
     @staticmethod
-    def geo2rec(lon: float, lat: float, alt: float) -> np.ndarray:
+    def geo_to_rec(lon: float, lat: float, alt: float) -> np.ndarray:
         """
         Convert geodetic coordinates (latitude, longitude, altitude) to rectangular
         coordinates in Earth-fixed frame (ITRF93).
@@ -585,7 +609,7 @@ class OrbitalCoordinates:
         return r_earth_fixed
     
     @staticmethod
-    def geo2eclip(lon: float, lat: float, alt: float, 
+    def geo_to_eclip(lon: float, lat: float, alt: float, 
                   date: Optional[str] = None, 
                   et: Optional[float] = None,
                   frame: str = 'ITRF93') -> np.ndarray:
@@ -733,7 +757,7 @@ class OrbitalCoordinates:
         v = np.array([vx, vy, vz])
         
         # Get position vector in Earth-fixed coordinates
-        r = OrbitalCoordinates.geo2rec(lon, lat, alt)
+        r = OrbitalCoordinates.geo_to_rec(lon, lat, alt)
         
         # Earth's rotation parameters
         t_sidereal = 86164.09053083288  # Sidereal day in seconds
@@ -752,6 +776,36 @@ class OrbitalCoordinates:
         v_eclip = spy.mxv(mx, v_E)
         
         return v_eclip
+
+    @staticmethod
+    def get_asteroid_state_vector(r_eclip: np.ndarray, v_eclip: np.ndarray, date: str) -> np.ndarray:
+        """
+        Get asteroid position in Ecliptic J2000 coordinates.
+        
+        This function takes the asteroid's position and velocity in Ecliptic J2000 coordinates
+        and returns the asteroid's position in Ecliptic J2000 coordinates.
+        """
+        rb.horizons.SSL_CONTEXT = 'unverified'
+
+        sim = rb.Simulation()
+        sim.units = 'km', 's', 'kg'
+        sim.integrator = "IAS15"
+        sim.dt = -86400
+
+        time = Time(date, format="iso")
+
+        # Suppress REBOUND's verbose output when querying Horizons
+        with _suppress_stdout_stderr():
+            for i in ["Sun", "199", "299", "399", "499", "599", "699", "799", "899"]:
+                sim.add(i, hash=f"{i}", date=f"JD{time.tdb.jd}")
+
+        r_earth = np.array(sim.particles["399"].xyz)
+        v_earth = np.array(sim.particles["399"].vxyz)
+
+        r_asteroid = r_eclip + r_earth 
+        v_asteroid = v_eclip + v_earth #así si es 
+        
+        return np.concatenate([r_asteroid, v_asteroid])
 
 
 def compute_orbital_period(a: float, mu: float) -> float:
@@ -805,8 +859,8 @@ def compute_orbital_period(a: float, mu: float) -> float:
 
 def get_pre_impact_orbital_elements(lon: float, lat: float, alt: float,
                                     vx: float, vy: float, vz: float,
-                                    date: str, mu: float) -> Tuple[float, float, float, 
-                                                                   float, float, float, float]:
+                                    date: str) -> list[float, float, float, 
+                                                                float, float, float]:
     """
     Compute pre-impact orbital elements from impact location and velocity.
     
@@ -878,18 +932,41 @@ def get_pre_impact_orbital_elements(lon: float, lat: float, alt: float,
     oc = OrbitalCoordinates()
     
     # Convert geographic coordinates to ecliptic J2000
-    r_eclip = oc.geo2eclip(lon, lat, alt, date=date)
+    r_eclip = oc.geo_to_eclip(lon, lat, alt, date=date)
     
     # Convert velocity to ecliptic J2000
     v_eclip = oc.get_velocity_ecliptic(vx, vy, vz, lon, lat, alt, date=date)
+
+    rb.horizons.SSL_CONTEXT = 'unverified'
+
+    AU = 149597870 #km
+    day = 86400
+
+    sim = rb.Simulation()
+    sim.units = 'km', 's', 'kg'
+    sim.integrator = "IAS15"
+    sim.dt = -86400
+
+    time = Time(date, format="iso")
+
+    # Suppress REBOUND's verbose output when querying Horizons
+    with _suppress_stdout_stderr():
+        for i in ["Sun", "199", "299", "399", "499", "599", "699", "799", "899"]:
+            sim.add(i, hash=f"{i}", date=f"JD{time.tdb.jd}")
+
+
+    r_earth = np.array(sim.particles["399"].xyz)
+    v_earth = np.array(sim.particles["399"].vxyz)
+
+    r_asteroid = r_eclip + r_earth 
+    v_asteroid = v_eclip + v_earth #así si es 
+
+    asteroid = sim.add(x=r_asteroid[0], y=r_asteroid[1], z=r_asteroid[2], 
+                    vx=v_asteroid[0], vy=v_asteroid[1], vz=v_asteroid[2], hash="asteroid")
+
+    sim.move_to_hel()
+    asteroid = sim.particles["asteroid"]
+    o = asteroid.orbit()
+    asteroid_orbit_elements = [o.a, o.e, o.inc, o.Omega, o.omega, o.f] 
     
-    # Convert to orbital elements
-    # Note: SPICE expects position in [km] and velocity in [km/s] for mu in [km³/s²]
-    # Or position in [AU] and velocity in [AU/day] for mu in [AU³/day²]
-    q, e, i, Omega, w, M, a = oc.transformation_x_to_e(
-        r_eclip[0], r_eclip[1], r_eclip[2],
-        v_eclip[0], v_eclip[1], v_eclip[2],
-        mu
-    )
-    
-    return q, e, i, Omega, w, M, a
+    return asteroid_orbit_elements

@@ -3,6 +3,7 @@ import math
 from time import time
 import spiceypy as spy
 import os
+from datetime import datetime
 from multineas import ROOTDIR
 
 class Util(object):
@@ -138,6 +139,39 @@ class Util(object):
         [HC] This function was mostly developed by human intelligences.
         """
         return [f(p[i],s[i]) if s[i]>0 else p[i] for i in range(len(p))]
+
+    @staticmethod
+    def true_anomaly_to_mean_anomaly(e, f):
+        """
+        Convert true anomaly to mean anomaly.
+        
+        Parameters
+        ----------
+        e : float
+            Eccentricity.
+        f : float
+            True anomaly.
+            
+        Returns
+        -------
+        M : float
+            Mean anomaly.
+        
+        Notes
+        -----
+        This function:
+        1. Calculates eccentric anomaly E from true anomaly f
+        2. Uses Kepler's equation to calculate mean anomaly M from E and e
+        
+        The conversion uses the formula:
+        - E = 2 * arctan(tan(f/2) / sqrt((1+e)/(1-e)))
+        - M = E - e*sin(E) (Kepler's equation)
+        """
+        # Calculate eccentric anomaly E from true anomaly f
+        E = 2 * np.arctan(np.tan(f/2) / np.sqrt((1+e)/(1-e)))
+        M = E - e * np.sin(E)
+        
+        return M
 
     def error_msg(error,msg):
         """
@@ -516,3 +550,109 @@ class Stats(object):
         """
         M[np.triu_indices(M.shape[0],k=0)]=np.array(F)
         M[:,:]=np.triu(M)+np.tril(M.T,-1)
+    
+    @staticmethod
+    def download_cneos_fireballs(force_download=False):
+        """
+        Download CNEOS Fireball Database data in CSV format.
+        
+        This method downloads the CNEOS (Center for Near Earth Object Studies)
+        Fireball Database data from NASA's JPL website. The data is saved in
+        the package's data folder with a filename that includes the download date.
+        
+        Parameters
+        ----------
+        force_download : bool, default False
+            If True, download the data even if a file for today already exists.
+            If False, skip download if a file for today already exists.
+            
+        Returns
+        -------
+        str
+            Full path to the downloaded CSV file. Returns None if download fails.
+            
+        Examples
+        --------
+        >>> from multineas.util import Util
+        >>> 
+        >>> # Download CNEOS fireball data
+        >>> csv_path = Util.download_cneos_fireballs()
+        >>> print(f"Data saved to: {csv_path}")
+        >>> 
+        >>> # Force download even if file exists
+        >>> csv_path = Util.download_cneos_fireballs(force_download=True)
+        
+        Notes
+        -----
+        - The file is saved with format: `cneos_fireballs_YYYYMMDD.csv`
+        - Requires the `requests` package to be installed.
+        - The CNEOS website uses DataTables, and this method accesses the CSV
+          export endpoint directly.
+        - If a file for today already exists and `force_download=False`,
+          the existing file path is returned.
+          
+        Attribution
+        -----------
+        [HC] This method was mostly developed by human intelligences.
+        """
+        if not HAS_REQUESTS:
+            raise ImportError(
+                "The 'requests' package is required for downloading CNEOS data. "
+                "Install it with: pip install requests"
+            )
+        
+        # CNEOS Fireball Database CSV export URL
+        # The DataTable CSV export endpoint
+        csv_url = "https://cneos.jpl.nasa.gov/fireballs/export.php"
+        
+        # Data directory
+        data_dir = os.path.join(ROOTDIR, 'data')
+        if not os.path.exists(data_dir):
+            os.makedirs(data_dir)
+        
+        # Generate filename with current date
+        today = datetime.now().strftime("%Y%m%d")
+        filename = f"cneos_fireballs_{today}.csv"
+        filepath = os.path.join(data_dir, filename)
+        
+        # Check if file already exists for today
+        if os.path.exists(filepath) and not force_download:
+            print(f"CNEOS fireball data for today already exists: {filepath}")
+            return filepath
+        
+        try:
+            # Set headers to mimic a browser request
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                'Accept': 'text/csv,application/csv,*/*',
+                'Accept-Language': 'en-US,en;q=0.9',
+            }
+            
+            # Download the CSV data
+            print(f"Downloading CNEOS fireball data from {csv_url}...")
+            response = requests.get(csv_url, headers=headers, timeout=30)
+            response.raise_for_status()  # Raise an exception for bad status codes
+            
+            # Check if we got CSV data
+            content_type = response.headers.get('Content-Type', '').lower()
+            if 'csv' not in content_type and 'text/plain' not in content_type:
+                # Try to detect if it's CSV by checking first few bytes
+                if not response.text.strip().startswith(('Date', 'Peak', 'Latitude')):
+                    print("Warning: Response may not be in CSV format.")
+            
+            # Save to file
+            with open(filepath, 'w', encoding='utf-8') as f:
+                f.write(response.text)
+            
+            print(f"Successfully downloaded CNEOS fireball data to: {filepath}")
+            print(f"File size: {os.path.getsize(filepath)} bytes")
+            
+            return filepath
+            
+        except requests.exceptions.RequestException as e:
+            print(f"Error downloading CNEOS fireball data: {e}")
+            print("Please check your internet connection and try again.")
+            return None
+        except Exception as e:
+            print(f"Unexpected error while downloading CNEOS fireball data: {e}")
+            return None
