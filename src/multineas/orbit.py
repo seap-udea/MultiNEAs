@@ -59,6 +59,7 @@ __all__ = [
     "OrbitalCoordinates",
     # Deprecated/Alias
     "get_pre_impact_orbital_elements",
+    "get_state_vector",
 ]
 
 # -----------------------------------------------------------------------------
@@ -1531,8 +1532,7 @@ class Orbit:
             f"<Orbit q={self._elements[0]:.4f} AU e={self._elements[1]:.4f} "
             f"i={np.degrees(self._elements[2]):.2f}°>"
         )
-
-
+    
 # -----------------------------------------------------------------------------
 # Aliases for backward compatibility
 # -----------------------------------------------------------------------------
